@@ -6,25 +6,19 @@ import { PaperProvider } from "react-native-paper";
 import { name as appName } from "./app.json";
 import { ActivityIndicator, MD2Colors } from "react-native-paper";
 
-function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Hello world</Text>
-
-      <StatusBar style="auto" />
-    </View>
-  );
-}
-
-export default function Main() {
+export default function App() {
   return (
     <PaperProvider>
-      <App />
+      <View style={styles.container}>
+        <Text>Hello world</Text>
+
+        <StatusBar style="auto" />
+      </View>
     </PaperProvider>
   );
 }
 
-AppRegistry.registerComponent(appName, () => Main);
+AppRegistry.registerComponent(appName, () => App);
 
 const styles = StyleSheet.create({
   container: {
