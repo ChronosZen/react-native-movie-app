@@ -1,36 +1,43 @@
-import { Link } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
+import { Dropdown } from "../../src/components/Common/Dropdown";
+import { useEffect, useState } from "react";
+import fetchMovies from "../../src/services/movieApi";
+import ItemCard from "../../src/components/Common/ItemCard";
+const dropdownList = [
+  { label: "Now Playing", value: "now_playing" },
+  { label: "Popular", value: "popular" },
+  { label: "Top rated", value: "top_rated" },
+  { label: "Upcoming", value: "upcoming" },
+];
+
 export default function Page() {
+  const [filterMode, setFilterMode] = useState(dropdownList[0].value);
+  const [movieData, setMovieData] = useState([]);
+  useEffect(() => {
+    const loadMovies = async () => {
+      const movies = await fetchMovies(filterMode);
+      setMovieData(movies);
+      console.log(movies.length);
+    };
+    loadMovies();
+  }, [filterMode]);
+
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.scrollView}>
       <View style={styles.main}>
-        <Text style={styles.title}>Hello World!!</Text>
-        <Link href="/moviedetail/1">Movie detail</Link>
-        <Link href="/search/Search">Search</Link>
-        <Link href="/tv/TV">TV</Link>
+        <Dropdown
+          dropdownList={dropdownList}
+          filterMode={filterMode}
+          setFilterMode={setFilterMode}
+        />
       </View>
-    </View>
+      <ItemCard movieData={movieData} />
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    padding: 24,
-  },
-  main: {
-    flex: 1,
-    justifyContent: "center",
-    maxWidth: 960,
-    marginHorizontal: "auto",
-  },
-  title: {
-    fontSize: 64,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 36,
-    color: "#38434D",
+  scrollView: {
+    marginHorizontal: 20,
   },
 });

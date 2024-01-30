@@ -5,10 +5,22 @@ export const MaterialTopTabs = withLayoutContext(Navigator);
 
 export default TabsLayout = () => {
   return (
-    <MaterialTopTabs>
+    <MaterialTopTabs
+      screenOptions={{
+        tabBarActiveTintColor: "#8D7B68",
+        tabBarLabelStyle: {
+          fontSize: 14,
+          fontWeight: "bold",
+          textTransform: "capitalize",
+        },
+        tabBarIndicatorStyle: { backgroundColor: "#8D7B68", height: 3 },
+      }}>
       <MaterialTopTabs.Screen name="index" options={{ title: "Movies" }} />
-      <MaterialTopTabs.Screen name="search" options={{ title: "Search" }} />
-      <MaterialTopTabs.Screen name="tv" options={{ title: "TV" }} />
+      <MaterialTopTabs.Screen
+        name="search"
+        options={{ title: "Search Results" }}
+      />
+      <MaterialTopTabs.Screen name="tv" options={{ title: "TV Shows" }} />
     </MaterialTopTabs>
   );
 };
