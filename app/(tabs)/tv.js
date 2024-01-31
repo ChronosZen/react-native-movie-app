@@ -1,9 +1,9 @@
-import { StyleSheet, View, ScrollView, Text } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { Dropdown } from "../../src/components/Common/Dropdown";
 import { useEffect, useState } from "react";
-import fecthTV from "../../src/services/tvApi";
+import fetchMovies from "../../src/services/movieApi";
 import ItemCard from "../../src/components/Common/ItemCard";
-import { ActivityIndicator } from "react-native-paper";
+import { Loading } from "../../src/components/Common/Loading";
 const dropdownList = [
   { label: "Airing Today", value: "airing_today" },
   { label: "Popular", value: "popular" },
@@ -20,7 +20,7 @@ export default function Page() {
     const loadMovies = async () => {
       try {
         setIsLoading(true);
-        const movies = await fecthTV(filterMode);
+        const movies = await fetchMovies(filterMode, "tv");
         setMovieData(movies);
       } catch (error) {
       } finally {
@@ -34,13 +34,10 @@ export default function Page() {
   return (
     <>
       {isLoading ? (
-        <View style={styles.loading}>
-          <ActivityIndicator animating={true} color="#A4907C" size="large" />
-          <Text>Waiting for the result</Text>
-        </View>
+        <Loading />
       ) : (
         <ScrollView style={styles.scrollView}>
-          <View style={styles.main}>
+          <View>
             <Dropdown
               dropdownList={dropdownList}
               filterMode={filterMode}

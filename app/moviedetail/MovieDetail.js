@@ -3,8 +3,9 @@ import { useLocalSearchParams } from "expo-router";
 
 const MovieDetail = () => {
   const params = useLocalSearchParams();
-  const { title, overview, popularity, releaseDate, image } = params;
 
+  const { title, overview, popularity, releaseDate, image } = params;
+  let overview2 = decodeURIComponent(overview);
   return (
     <View style={styles.movieItem}>
       <Text style={styles.title}>{title}</Text>
@@ -14,7 +15,7 @@ const MovieDetail = () => {
           uri: `https://image.tmdb.org/t/p/original${image}`,
         }}
       />
-      <Text>{overview}</Text>
+      <Text>{overview2}</Text>
       <View style={styles.subview}>
         <Text>Popularity: {popularity} </Text>
         {releaseDate ? <Text>| Release Date: {releaseDate}</Text> : <></>}

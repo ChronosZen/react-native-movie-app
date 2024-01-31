@@ -3,7 +3,7 @@ import { Dropdown } from "../../src/components/Common/Dropdown";
 import { useEffect, useState } from "react";
 import fetchMovies from "../../src/services/movieApi";
 import ItemCard from "../../src/components/Common/ItemCard";
-import { ActivityIndicator } from "react-native-paper";
+import { Loading } from "../../src/components/Common/Loading";
 
 const dropdownList = [
   { label: "Now Playing", value: "now_playing" },
@@ -21,7 +21,7 @@ export default function Page() {
     const loadMovies = async () => {
       try {
         setIsLoading(true);
-        const movies = await fetchMovies(filterMode);
+        const movies = await fetchMovies(filterMode, "movie");
         setMovieData(movies);
       } catch (error) {
       } finally {
@@ -35,10 +35,7 @@ export default function Page() {
   return (
     <>
       {isLoading ? (
-        <View style={styles.loading}>
-          <ActivityIndicator animating={true} color="#A4907C" size="large" />
-          <Text>Waiting for the result</Text>
-        </View>
+        <Loading />
       ) : (
         <ScrollView style={styles.scrollView}>
           <View style={styles.main}>

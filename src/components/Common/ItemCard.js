@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import CardDetail from "./CardDetail";
-import { ActivityIndicator, MD2Colors } from "react-native-paper";
+import { Loading } from "./Loading";
 
 export default ItemCard = ({ movieData }) => {
   return (
@@ -10,7 +10,7 @@ export default ItemCard = ({ movieData }) => {
           <CardDetail movie={movie} key={index} />
         ))
       ) : (
-        <ActivityIndicator animating={true} color="#A4907C" />
+        <Loading />
       )}
     </View>
   );
