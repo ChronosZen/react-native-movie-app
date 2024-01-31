@@ -15,7 +15,6 @@ const fetchMovies = async (filterMode, mode, query) => {
 
   try {
     const response = await axios.request(options);
-    // console.log(response.data.results);
     return response.data.results;
   } catch (error) {
     console.error(error);

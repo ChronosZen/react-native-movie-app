@@ -1,26 +1,65 @@
+import React, { useState, useEffect } from "react";
 import { View, Image, Text, StyleSheet } from "react-native";
+import fetchSingle from "../../src/services/detailApi";
 import { useLocalSearchParams } from "expo-router";
-
+import { Loading } from "../../src/components/Common/Loading";
 const MovieDetail = () => {
   const params = useLocalSearchParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const [movie, setMovie] = useState({
+    title: "",
+    overview: "",
+    popularity: "",
+    releaseDate: "",
+    image: "",
+  });
+  const { id, mode } = params;
 
-  const { title, overview, popularity, releaseDate, image } = params;
-  let overview2 = decodeURIComponent(overview);
+  useEffect(() => {
+    const loadMovies = async () => {
+      try {
+        setIsLoading(true);
+        const data = await fetchSingle(id, mode);
+        setMovie({
+          title: data.title,
+          overview: data.overview,
+          popularity: data.popularity,
+          releaseDate: data.release_date,
+          image: data.poster_path,
+        });
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadMovies();
+  }, []);
+
   return (
-    <View style={styles.movieItem}>
-      <Text style={styles.title}>{title}</Text>
-      <Image
-        style={styles.image}
-        source={{
-          uri: `https://image.tmdb.org/t/p/original${image}`,
-        }}
-      />
-      <Text>{overview2}</Text>
-      <View style={styles.subview}>
-        <Text>Popularity: {popularity} </Text>
-        {releaseDate ? <Text>| Release Date: {releaseDate}</Text> : <></>}
-      </View>
-    </View>
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <View style={styles.movieItem}>
+          <Text style={styles.title}>{movie.title}</Text>
+          <Image
+            style={styles.image}
+            source={{
+              uri: `https://image.tmdb.org/t/p/original${movie.image}`,
+            }}
+          />
+          <Text>{movie.overview}</Text>
+          <View style={styles.subview}>
+            <Text>Popularity: {movie.popularity} </Text>
+            {movie.releaseDate ? (
+              <Text>| Release Date: {movie.releaseDate}</Text>
+            ) : null}
+          </View>
+        </View>
+      )}
+    </>
   );
 };
 

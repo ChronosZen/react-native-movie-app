@@ -2,7 +2,7 @@ import { Text, View, Image, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { Button } from "react-native-paper";
 export default CardDetail = ({ movie }) => {
-  let title, overview, popularity, releaseDate, image;
+  let title, popularity, releaseDate, image;
 
   if (movie.known_for) {
     title = movie?.title ? movie.title : movie.name;
@@ -18,8 +18,7 @@ export default CardDetail = ({ movie }) => {
     releaseDate = movie?.release_date;
     image = movie?.poster_path ? movie.poster_path : movie.backdrop_path;
   }
-  const encodedOverview = encodeURIComponent(overview);
-  const encodedString = encodedOverview.replace(/'/g, "%27");
+  const mode = releaseDate ? "movie" : "tv";
   const router = useRouter();
   return (
     <View style={styles.movieItem}>
@@ -37,15 +36,11 @@ export default CardDetail = ({ movie }) => {
           mode="contained"
           buttonColor="#8D7B68"
           onPress={() => {
-            console.log(encodedString);
             router.push({
               pathname: `/moviedetail/MovieDetail`,
               params: {
-                title,
-                overview: encodedString,
-                popularity,
-                releaseDate,
-                image,
+                id: movie.id,
+                mode: mode,
               },
             });
           }}

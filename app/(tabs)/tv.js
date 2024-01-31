@@ -1,9 +1,10 @@
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Text } from "react-native";
 import { Dropdown } from "../../src/components/Common/Dropdown";
 import { useEffect, useState } from "react";
 import fetchMovies from "../../src/services/movieApi";
 import ItemCard from "../../src/components/Common/ItemCard";
 import { Loading } from "../../src/components/Common/Loading";
+
 const dropdownList = [
   { label: "Airing Today", value: "airing_today" },
   { label: "Popular", value: "popular" },
@@ -37,7 +38,7 @@ export default function Page() {
         <Loading />
       ) : (
         <ScrollView style={styles.scrollView}>
-          <View>
+          <View style={styles.main}>
             <Dropdown
               dropdownList={dropdownList}
               filterMode={filterMode}
