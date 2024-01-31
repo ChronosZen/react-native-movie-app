@@ -4,8 +4,15 @@ module.exports = function (api) {
     presets: ["babel-preset-expo"],
     env: {
       production: {
-        presets: ["babel-preset-expo"],
-        plugins: ["react-native-paper/babel"],
+        presets: [
+          ["babel-preset-expo", { jsxImportSource: "nativewind" }],
+          "nativewind/babel",
+        ],
+        plugins: [
+          "react-native-paper/babel",
+          "expo-router/babel",
+          "react-native-reanimated/plugin",
+        ],
       },
     },
   };

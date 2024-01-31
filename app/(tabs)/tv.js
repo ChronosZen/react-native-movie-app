@@ -1,39 +1,67 @@
-import { View, Text, StyleSheet } from "react-native";
-import { useState } from "react";
+import { StyleSheet, View, ScrollView, Text } from "react-native";
 import { Dropdown } from "../../src/components/Common/Dropdown";
-const dropdownList = ["Airing today", "Popular", "On the air", "Top rated"];
-export default TV = () => {
-  const [filterMode, setFilterMode] = useState(dropdownList[0]);
+import { useEffect, useState } from "react";
+import fecthTV from "../../src/services/tvApi";
+import ItemCard from "../../src/components/Common/ItemCard";
+import { ActivityIndicator } from "react-native-paper";
+const dropdownList = [
+  { label: "Airing Today", value: "airing_today" },
+  { label: "Popular", value: "popular" },
+  { label: "Top rated", value: "top_rated" },
+  { label: "On The Air", value: "on_the_air" },
+];
+
+export default function Page() {
+  const [filterMode, setFilterMode] = useState(dropdownList[0].value);
+  const [movieData, setMovieData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadMovies = async () => {
+      try {
+        setIsLoading(true);
+        const movies = await fecthTV(filterMode);
+        setMovieData(movies);
+      } catch (error) {
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadMovies();
+  }, [filterMode]);
+
   return (
-    <View style={styles.container}>
-      <View style={styles.main}>
-        <Dropdown
-          dropdownList={dropdownList}
-          filterMode={filterMode}
-          setFilterMode={setFilterMode}
-        />
-      </View>
-    </View>
+    <>
+      {isLoading ? (
+        <View style={styles.loading}>
+          <ActivityIndicator animating={true} color="#A4907C" size="large" />
+          <Text>Waiting for the result</Text>
+        </View>
+      ) : (
+        <ScrollView style={styles.scrollView}>
+          <View style={styles.main}>
+            <Dropdown
+              dropdownList={dropdownList}
+              filterMode={filterMode}
+              setFilterMode={setFilterMode}
+            />
+          </View>
+          <ItemCard movieData={movieData} />
+        </ScrollView>
+      )}
+    </>
   );
-};
+}
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    padding: 24,
+  scrollView: {
+    marginHorizontal: 20,
   },
-  main: {
+  loading: {
     flex: 1,
     justifyContent: "center",
-    maxWidth: 960,
-    marginHorizontal: "auto",
-  },
-  title: {
-    fontSize: 64,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 36,
-    color: "#38434D",
+    alignItems: "center",
+    gap: 10,
   },
 });
