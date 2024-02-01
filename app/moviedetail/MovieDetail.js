@@ -14,17 +14,18 @@ const MovieDetail = () => {
     image: "",
   });
   const { id, mode } = params;
-
   useEffect(() => {
     const loadMovies = async () => {
       try {
         setIsLoading(true);
         const data = await fetchSingle(id, mode);
         setMovie({
-          title: data.title,
+          title: data.title ? data.title : data.name,
           overview: data.overview,
           popularity: data.popularity,
-          releaseDate: data.release_date,
+          releaseDate: data.release_date
+            ? data.release_date
+            : data.first_air_date,
           image: data.poster_path,
         });
       } catch (error) {

@@ -2,13 +2,14 @@ import { Text, View, Image, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { Button } from "react-native-paper";
 export default CardDetail = ({ movie }) => {
-  let title, popularity, releaseDate, image;
+  let title, popularity, releaseDate, image, id;
 
   if (movie.known_for) {
     title = movie?.title ? movie.title : movie.name;
     overview = movie.known_for[0]?.overview;
     popularity = movie?.known_for?.[0]?.popularity;
     releaseDate = movie?.known_for?.[0]?.release_date;
+    id = movie?.known_for?.[0]?.id;
     image =
       movie.known_for?.[0]?.poster_path ?? movie.known_for?.[0]?.backdrop_path;
   } else {
@@ -16,9 +17,11 @@ export default CardDetail = ({ movie }) => {
     overview = movie?.overview;
     popularity = movie?.popularity;
     releaseDate = movie?.release_date;
+    id = movie.id;
     image = movie?.poster_path ? movie.poster_path : movie.backdrop_path;
   }
   const mode = releaseDate ? "movie" : "tv";
+
   const router = useRouter();
   return (
     <View style={styles.movieItem}>
@@ -39,8 +42,8 @@ export default CardDetail = ({ movie }) => {
             router.push({
               pathname: `/moviedetail/MovieDetail`,
               params: {
-                id: movie.id,
-                mode: mode,
+                id,
+                mode,
               },
             });
           }}

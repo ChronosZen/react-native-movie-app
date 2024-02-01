@@ -7,6 +7,7 @@ import ItemCard from "../../src/components/Common/ItemCard";
 const dropdownList = [
   { label: "Movie", value: "movie" },
   { label: "Multi", value: "multi" },
+  { label: "TV", value: "tv" },
 ];
 
 export default function Page() {
@@ -33,6 +34,10 @@ export default function Page() {
   return (
     <View style={styles.container}>
       <View style={styles.searchBarContainer}>
+        <Text>
+          Search Movie/TV Show Name
+          <Text style={{ color: "red" }}>*</Text>
+        </Text>
         <Searchbar
           style={styles.search}
           placeholder="i.e Jame bond, CSI"
@@ -41,6 +46,10 @@ export default function Page() {
           value={searchQuery}
         />
       </View>
+      <Text style={styles.searchText}>
+        Choose Search Type
+        <Text style={{ color: "red" }}>*</Text>
+      </Text>
       <View style={styles.dropdownButtonContainer}>
         <Dropdown
           dropdownList={dropdownList}
@@ -91,5 +100,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     gap: 10,
+  },
+  searchText: {
+    marginTop: 10,
   },
 });
