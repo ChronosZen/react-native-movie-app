@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL, APP_KEY } from "../config/apiConfig";
 
-const fetchMovies = async (filterMode, mode, query) => {
+const fetchMovies = async (filterMode, mode) => {
   const url = `${BASE_URL}/${mode}/${filterMode}?language=en-US&page=1`;
 
   const options = {
