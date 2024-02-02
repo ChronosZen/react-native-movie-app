@@ -4,6 +4,7 @@ import { Dropdown } from "../../src/components/Common/Dropdown";
 import { useEffect, useState } from "react";
 import fetchSearch from "../../src/services/searchApi";
 import ItemCard from "../../src/components/Common/ItemCard";
+import { Pagination } from "../../src/components/Common/Pagination";
 const dropdownList = [
   { label: "Movie", value: "movie" },
   { label: "Multi", value: "multi" },
@@ -13,13 +14,14 @@ const dropdownList = [
 export default function Page() {
   const [filterMode, setFilterMode] = useState(dropdownList[0].value);
   const [movieData, setMovieData] = useState([]);
-
+  const [startNumber, setStartNumber] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [query, setQuery] = useState("");
+  const [apiPage, setApiPage] = useState(1);
   useEffect(() => {
     const loadMovies = async () => {
       try {
-        const movies = await fetchSearch(filterMode, "search", query);
+        const movies = await fetchSearch(filterMode, "search", query, apiPage);
         setMovieData(movies);
       } catch (error) {
         console.log(error);
@@ -67,7 +69,14 @@ export default function Page() {
       </View>
       <ScrollView style={styles.scrollView}>
         {query.length > 0 ? (
-          <ItemCard movieData={movieData} />
+          <>
+            <ItemCard movieData={movieData} startNumber={startNumber} />
+            <Pagination
+              startNumber={startNumber}
+              setStartNumber={setStartNumber}
+              setApiPage={setApiPage}
+            />
+          </>
         ) : (
           <View style={styles.main}>
             <Text>Please initiate the search</Text>

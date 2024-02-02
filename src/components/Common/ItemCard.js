@@ -2,11 +2,15 @@ import { StyleSheet, Text, View } from "react-native";
 import CardDetail from "./CardDetail";
 import { Loading } from "./Loading";
 
-export default ItemCard = ({ movieData }) => {
+export default ItemCard = ({ movieData, startNumber }) => {
+  const movieSlice =
+    (startNumber + 1) % 2 === 0
+      ? movieData.slice(10, 19)
+      : movieData.slice(0, 9);
   return (
     <View style={styles.main}>
-      {movieData.length > 0 ? (
-        movieData.map((movie, index) => (
+      {movieSlice.length > 0 ? (
+        movieSlice.map((movie, index) => (
           <CardDetail movie={movie} key={index} />
         ))
       ) : (

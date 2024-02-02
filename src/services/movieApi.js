@@ -1,8 +1,8 @@
 import axios from "axios";
 import { BASE_URL, APP_KEY } from "../config/apiConfig";
 
-const fetchMovies = async (filterMode, mode) => {
-  const url = `${BASE_URL}/${mode}/${filterMode}?language=en-US&page=1`;
+const fetchMovies = async (filterMode, mode, apiPage) => {
+  const url = `${BASE_URL}/${mode}/${filterMode}?language=en-US&page=${apiPage}`;
 
   const options = {
     method: "GET",
@@ -15,7 +15,7 @@ const fetchMovies = async (filterMode, mode) => {
 
   try {
     const response = await axios.request(options);
-    return response.data.results;
+    return response.data;
   } catch (error) {
     console.error(error);
   }

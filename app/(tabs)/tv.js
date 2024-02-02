@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import fetchMovies from "../../src/services/movieApi";
 import ItemCard from "../../src/components/Common/ItemCard";
 import { Loading } from "../../src/components/Common/Loading";
+import { Pagination } from "../../src/components/Common/Pagination";
 
 const dropdownList = [
   { label: "Airing Today", value: "airing_today" },
@@ -16,13 +17,15 @@ export default function Page() {
   const [filterMode, setFilterMode] = useState(dropdownList[0].value);
   const [movieData, setMovieData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [startNumber, setStartNumber] = useState(0);
+  const [apiPage, setApiPage] = useState(1);
 
   useEffect(() => {
     const loadMovies = async () => {
       try {
         setIsLoading(true);
-        const movies = await fetchMovies(filterMode, "tv");
-        setMovieData(movies);
+        const movies = await fetchMovies(filterMode, "tv", apiPage);
+        setMovieData(movies.results);
       } catch (error) {
       } finally {
         setIsLoading(false);
@@ -30,7 +33,7 @@ export default function Page() {
     };
 
     loadMovies();
-  }, [filterMode]);
+  }, [filterMode, apiPage]);
 
   return (
     <>
@@ -45,7 +48,12 @@ export default function Page() {
               setFilterMode={setFilterMode}
             />
           </View>
-          <ItemCard movieData={movieData} />
+          <ItemCard movieData={movieData} startNumber={startNumber} />
+          <Pagination
+            startNumber={startNumber}
+            setStartNumber={setStartNumber}
+            setApiPage={setApiPage}
+          />
         </ScrollView>
       )}
     </>
